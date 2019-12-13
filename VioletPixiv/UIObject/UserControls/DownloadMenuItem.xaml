@@ -1,0 +1,16 @@
+﻿<MenuItem x:Class="VioletPixiv.UIObject.UserControls.DownloadMenuItem"
+          x:Name="DownloadMenuItemName"
+          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+          xmlns:local="clr-namespace:VioletPixiv.UIObject.UserControls"
+          Header="Download" 
+          Command="{StaticResource DownloadCommand}"
+          CommandParameter="{Binding Path=TargetImage, ElementName=DownloadMenuItemName, UpdateSourceTrigger=PropertyChanged}"
+          >
+
+    <MenuItem.Icon>
+        <Image Source="/VioletPixiv;component/Resources/Images/black_icon/round_save_alt_black_48dp.png" />
+    </MenuItem.Icon>
+
+</MenuItem>

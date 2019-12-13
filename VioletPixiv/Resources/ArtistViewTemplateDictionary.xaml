@@ -1,0 +1,182 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:uc="clr-namespace:VioletPixiv.UIObject.UserControls">
+
+    <DataTemplate x:Key="ArtistListViewTemplate" >
+
+        <Border
+            BorderBrush="{DynamicResource ForegroundBrushKey}"
+            BorderThickness="1"
+            Background="{DynamicResource BackgroundBrushKey}"
+            Height="590"
+            Width="340"
+            Margin="12"
+            Padding="2">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1.3*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="5.5*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" x:Name="Grid0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{Binding ElementName=Grid0, Path=ActualHeight}"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <uc:HeaderButton Grid.Column="0"
+                                     TargetUserID="{Binding TargetIllust.User.Id, UpdateSourceTrigger=PropertyChanged}">
+
+                        <uc:HeaderButton.Background>
+                            <ImageBrush ImageSource="{Binding IllustHeader, UpdateSourceTrigger=PropertyChanged}"></ImageBrush>
+                        </uc:HeaderButton.Background>
+
+                    </uc:HeaderButton>
+
+                    <DockPanel Grid.Column="1" >
+                        <TextBox DockPanel.Dock="Top" Text="{Binding TargetIllust.User.Name}"></TextBox>
+
+                        <uc:FollowButton DockPanel.Dock="Bottom" TargetUser="{Binding TargetIllust.User}" HorizontalAlignment="Center" />
+                        
+                    </DockPanel>
+
+
+                </Grid>
+
+                <ListView Grid.Row="1"
+                              Foreground="{DynamicResource ForegroundBrushKey}"
+                              FontFamily="Segoe UI"
+                              ItemsSource="{Binding TargetIllust.Tags,Converter={StaticResource TagListToTagButtonListConverter}}"
+                              HorizontalAlignment="Stretch"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          Margin="0,5,0,0">
+
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel IsItemsHost="True"  HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+
+                </ListView>
+
+                <Button  Grid.Row="2"  HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource ImageButtonStyle}" 
+                         Command="{StaticResource ImageCommand}"
+                         CommandParameter="{Binding TargetIllust}">
+                    <Image>
+                        <Image.Source>
+                            <Binding Path="IllustImage" UpdateSourceTrigger="PropertyChanged" >
+                                <Binding.TargetNullValue>
+                                    <ImageSource>/VioletPixiv;component/Resources/Images/Loading_pic.png</ImageSource>
+                                </Binding.TargetNullValue>
+                            </Binding>
+                        </Image.Source>
+                    </Image>
+                </Button>
+
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="{Binding TargetIllust.Title}"></TextBlock>
+
+                    <uc:BookMarkButton Grid.Column="1"
+                                       TargetIllust="{Binding TargetIllust}"/>
+
+                </Grid>
+
+            </Grid>
+
+        </Border>
+
+    </DataTemplate>
+
+    <DataTemplate x:Key="ArtistListViewSmallTemplate">
+
+        <Border
+            BorderBrush="{DynamicResource ForegroundBrushKey}"
+            BorderThickness="1"
+            Background="{DynamicResource BackgroundBrushKey}"
+            Height="350"
+            Width="250"
+            Margin="5"
+            Padding="2">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5*" />
+                    <RowDefinition Height="2*" />
+                </Grid.RowDefinitions>
+
+                <Button  Grid.Row="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource ImageButtonStyle}" 
+                         Command="{StaticResource ImageCommand}"
+                         CommandParameter="{Binding TargetIllust}">
+                    
+                    <Image Source="{Binding IllustImage}"></Image>
+                    
+                </Button>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Column="0" Text="{Binding TargetIllust.Title}"></TextBox>
+
+                    <uc:BookMarkButton Grid.Column="1"
+                                       TargetIllust="{Binding TargetIllust}"/>
+
+                </Grid>
+
+            </Grid>
+
+        </Border>
+
+    </DataTemplate>
+
+    <DataTemplate x:Key="UserViewTemplate">
+
+        <Border
+            BorderBrush="{DynamicResource ForegroundBrushKey}"
+            BorderThickness="1"
+            Background="{DynamicResource BackgroundBrushKey}"
+            Height="250"
+            Width="200"
+            Margin="5"
+            Padding="2">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                
+                <uc:HeaderButton Grid.Row="0"  HorizontalAlignment="Center" VerticalAlignment="Center"
+                                     TargetUserID="{Binding TargetUserDetail.User.Id, UpdateSourceTrigger=PropertyChanged}">
+
+                    <uc:HeaderButton.Background>
+                        <ImageBrush ImageSource="{Binding IllustHeader, UpdateSourceTrigger=PropertyChanged}"></ImageBrush>
+                    </uc:HeaderButton.Background>
+
+                </uc:HeaderButton>
+
+                <Grid Grid.Row="1">
+
+                    <TextBlock Grid.Column="0" 
+                               HorizontalAlignment="Center"
+                               Text="{Binding TargetUserDetail.User.Name}"></TextBlock>
+
+                </Grid>
+
+            </Grid>
+
+        </Border>
+
+    </DataTemplate>
+
+</ResourceDictionary>

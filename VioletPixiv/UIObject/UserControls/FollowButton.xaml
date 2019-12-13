@@ -1,0 +1,79 @@
+﻿<ToggleButton x:Class="VioletPixiv.UIObject.UserControls.FollowButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:qc="clr-namespace:QuickConverter;assembly=QuickConverter"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:VioletPixiv.UIObject.UserControls"
+             Padding="0"
+             FontSize="20"
+             Width="130"
+             Height="45"
+             VerticalAlignment="Center"
+             IsChecked="{Binding Path=TargetUser.IsFollowed, RelativeSource={RelativeSource Self}, UpdateSourceTrigger=PropertyChanged}"
+             Command="{StaticResource FollowCommand}"
+             CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+
+    <ToggleButton.Resources>
+
+        <Color x:Key="FollowButtonBrush">#FF235BEE</Color>
+        <SolidColorBrush  x:Key="FollowButtonBrushSolid"  Color="{DynamicResource FollowButtonBrush}"/>
+
+        <Color x:Key="UnFollowButtonBrush">White</Color>
+        <SolidColorBrush  x:Key="UnFollowButtonBrushSolid"  Color="{DynamicResource UnFollowButtonBrush}"/>
+
+    </ToggleButton.Resources>
+
+    <ToggleButton.Style>
+        <Style TargetType="ToggleButton">
+            
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="{DynamicResource BackgroundBrushKey}">
+                            <ContentPresenter HorizontalAlignment="Center"                  
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <!-- Default Image -->
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Border CornerRadius="10" 
+                            BorderThickness="5" 
+                            Background="{DynamicResource FollowButtonBrushSolid}"
+                            BorderBrush="Transparent">
+                        <TextBlock Margin="2"
+                                   Foreground="{DynamicResource UnFollowButtonBrushSolid}"
+                                   Text="フォロー"/>
+                    </Border>
+                </Setter.Value>
+            </Setter>
+            
+            <Style.Triggers>
+                <!-- Click and Change Image -->
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <Border CornerRadius="10"  
+                                    BorderThickness="5" 
+                                    Background="{DynamicResource UnFollowButtonBrushSolid}"  
+                                    BorderBrush="{DynamicResource FollowButtonBrushSolid}">
+                                <TextBlock Margin="2"
+                                           Foreground="{DynamicResource FollowButtonBrushSolid}"
+                                           Text="フォロー中"/>
+                            </Border>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <!-- HandCursor -->
+                <Trigger Property="IsMouseOver" 
+                         Value="true">
+                    <Setter Property="Cursor" 
+                            Value="Hand" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </ToggleButton.Style>
+    
+</ToggleButton>

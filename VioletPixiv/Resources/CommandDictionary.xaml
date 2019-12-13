@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:cmd="clr-namespace:VioletPixiv.Command">
+
+    <cmd:CloseFrameCommand x:Key="CloseFrameCommand"/>
+    <cmd:BookMarkCommand x:Key="BookMarkCommand"/>
+    <cmd:FollowCommand x:Key="FollowCommand"/>
+    <cmd:DownloadCommand x:Key="DownloadCommand"/>
+    <cmd:TagCommand x:Key="TagCommand"/>
+    <cmd:WebAccessCommand x:Key="WebAccessCommand"/>
+    <cmd:HeaderCommand x:Key="HeaderCommand"/>
+    <cmd:ImageCommand x:Key="ImageCommand"/>
+    <cmd:ArtistsSearchCommand x:Key="ArtistsSearchComand"/>
+    <cmd:UserListSearchCommand x:Key="UserListSearchCommand"/>
+    <cmd:NewImageWindowCommand x:Key="NewImageWindowCommand"/>
+    
+
+</ResourceDictionary>

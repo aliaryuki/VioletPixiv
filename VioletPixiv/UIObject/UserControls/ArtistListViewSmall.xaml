@@ -1,0 +1,77 @@
+﻿<ListView    x:Class="VioletPixiv.UIObject.UserControls.ArtistListViewSmall"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:uc="clr-namespace:VioletPixiv.UIObject.UserControls"
+             xmlns:local="clr-namespace:VioletPixiv.UIObject.UserControls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+             HorizontalAlignment="Stretch"
+             >
+
+    <ListView.ItemsPanel>
+        <ItemsPanelTemplate >
+            <WrapPanel IsItemsHost="True"  HorizontalAlignment="Center"/>
+        </ItemsPanelTemplate>
+    </ListView.ItemsPanel>
+
+    <ListView.Template>
+        <ControlTemplate>
+            <!-- Empty template to allow ScrollViewer to capture mouse scroll -->
+            <ItemsPresenter />
+        </ControlTemplate>
+    </ListView.Template>
+
+    <ListView.ItemTemplate>
+        <DataTemplate>
+
+            <!-- Border -->
+            <Border BorderBrush="{DynamicResource ForegroundBrushKey}"
+                    Background="{DynamicResource BackgroundBrushKey}"
+                    BorderThickness="1"
+                    Height="350"
+                    Width="250"
+                    Margin="5"
+                    Padding="2">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*" />
+                        <RowDefinition Height="2*" />
+                    </Grid.RowDefinitions>
+
+                    <!-- IllustImage -->
+                    <Button  Grid.Row="0"
+                             Style="{StaticResource ImageButtonStyle}" 
+                             Command="{StaticResource ImageCommand}"
+                             CommandParameter="{Binding TargetIllust}">
+                        <Image>
+                            <Image.Source>
+                                <Binding Path="IllustImage" UpdateSourceTrigger="PropertyChanged" >
+                                    <Binding.TargetNullValue>
+                                        <ImageSource>/VioletPixiv;component/Resources/Images/Loading_pic.png</ImageSource>
+                                    </Binding.TargetNullValue>
+                                </Binding>
+                            </Image.Source>
+                        </Image>
+                    </Button>
+
+                    <!-- Name and Bookmark -->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Grid.Column="0" 
+                                 Text="{Binding TargetIllust.Title}"/>
+                        <uc:BookMarkButton Grid.Column="1"
+                                           TargetIllust="{Binding TargetIllust}"/>
+                    </Grid>
+                </Grid>
+            </Border>
+
+        </DataTemplate>
+    </ListView.ItemTemplate>
+    
+</ListView>

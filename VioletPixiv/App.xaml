@@ -1,0 +1,26 @@
+﻿<Application x:Class="VioletPixiv.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:VioletPixiv"
+             xmlns:gif="http://wpfanimatedgif.codeplex.com"
+             xmlns:uc="clr-namespace:VioletPixiv.UIObject.UserControls"
+             StartupUri="UI/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Resources/FontsDictionary.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MetroRadiance;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MetroRadiance;component/Themes/Dark.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MetroRadiance;component/Themes/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Resources/ConverterDictionary.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Resources/CommandDictionary.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Resources/DefaultDictionary.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Resources/ButtonStyleDictionary.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Resources/TextBoxStyleDictionary.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Resources/ArtistViewTemplateDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

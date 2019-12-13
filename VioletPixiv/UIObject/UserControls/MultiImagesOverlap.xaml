@@ -1,0 +1,65 @@
+﻿<ItemsControl  x:Class="VioletPixiv.UIObject.UserControls.MultiImagesOverlap"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:system="clr-namespace:System;assembly=mscorlib"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:local="clr-namespace:VioletPixiv.UIObject.UserControls"
+               xmlns:uc="clr-namespace:VioletPixiv.UIObject.UserControls"
+               x:Name="MultiImagesItems">
+
+    <ItemsControl.Background>
+        <ImageBrush ImageSource="/VioletPixiv;component/Resources/Images/Loading_pic.png"/>
+    </ItemsControl.Background>
+    
+    <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+            <Grid/>
+        </ItemsPanelTemplate>
+    </ItemsControl.ItemsPanel>
+
+    <ItemsControl.ItemTemplate>
+        <DataTemplate>
+
+            <Grid Background="{DynamicResource BackgroundBrushKey}" 
+                  VerticalAlignment="Stretch" 
+                  HorizontalAlignment="Stretch">
+
+                <Button  x:Name="MultiImagesButton" 
+                         Click="MultiImagesButton_Click" 
+                         Style="{StaticResource ImageButtonStyle}">
+
+                    <!-- Button Shadow -->
+                    <Button.BitmapEffect>
+                        <DropShadowBitmapEffect Color="White" ShadowDepth="10" Opacity="1" Softness="0" />
+                    </Button.BitmapEffect>
+
+                    <!-- Image and Download -->
+                    <Image x:Name="MainImage" Source="{Binding}">
+                        <Image.ContextMenu>
+                            <ContextMenu>
+                                <uc:DownloadMenuItem TargetImage="{Binding}"/>
+                            </ContextMenu>
+                        </Image.ContextMenu>
+                    </Image>
+                </Button>
+
+            </Grid>
+
+            <DataTemplate.Triggers>
+
+                <DataTrigger Binding="{Binding ElementName=MultiImagesItems, Path=Items.Count,  Mode=OneWay}" Value="1">
+                    <Setter Property="BitmapEffect" TargetName="MultiImagesButton">
+                        <Setter.Value>
+                            <DropShadowBitmapEffect Opacity="0" />
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+
+            </DataTemplate.Triggers>
+
+        </DataTemplate>
+
+    </ItemsControl.ItemTemplate>
+
+
+</ItemsControl>

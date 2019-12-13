@@ -1,0 +1,69 @@
+﻿<metro:BlurWindow x:Class="VioletPixiv.UI.BlurImageWindow"
+				  x:Name="BlurWindow"
+				  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+				  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+				  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+				  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				  xmlns:metro="http://schemes.grabacr.net/winfx/2014/controls"
+                  xmlns:uc="clr-namespace:VioletPixiv.UIObject.UserControls"
+				  mc:Ignorable="d"
+				  Width="600"
+				  Height="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- TopBar -->
+        <Border Grid.Row="0"
+                MouseLeftButtonDown="Border_MouseLeftButtonDown">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <metro:CaptionIcon Grid.Column="0">
+                    <Ellipse Width="18"
+							 Height="18"
+							 Fill="{Binding ElementName=BlurWindow, Path=Foreground}" />
+                </metro:CaptionIcon>
+                
+                <TextBlock Grid.Column="1"
+                           TextAlignment="Center"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+						    Text="{Binding ElementName=BlurWindow, Path=Title}"
+						    TextTrimming="CharacterEllipsis"
+						    Foreground="{Binding ElementName=BlurWindow, Path=Foreground}"
+						    FontFamily="Segoe UI Light"
+						    FontSize="18"
+						    Margin="3,0,0,0"/>
+                    
+                <metro:SystemButtons Grid.Column="2"
+									 VerticalAlignment="Top" />
+            </Grid>
+        </Border>
+
+        <!-- Zoom Picture -->
+        <uc:ZoomBorder  Grid.Row="1"
+                        Focusable="True"
+                        ClipToBounds="True"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch">
+
+            <Image x:Name="MainImage">
+                <!-- Right Click Download Button -->
+                <Image.ContextMenu>
+                    <ContextMenu>
+                        <uc:DownloadMenuItem TargetImage="{Binding Source, ElementName=MainImage, UpdateSourceTrigger=PropertyChanged}"/>
+                    </ContextMenu>
+                </Image.ContextMenu>
+            </Image>
+
+        </uc:ZoomBorder>
+
+    </Grid>
+    
+</metro:BlurWindow>

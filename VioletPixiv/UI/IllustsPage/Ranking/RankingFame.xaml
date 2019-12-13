@@ -1,0 +1,124 @@
+﻿<Frame x:Class="VioletPixiv.RankingFame"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+      xmlns:qc="clr-namespace:QuickConverter;assembly=QuickConverter"
+      xmlns:uc="clr-namespace:VioletPixiv.UIObject.UserControls"
+      xmlns:local="clr-namespace:VioletPixiv"
+      NavigationUIVisibility="Hidden"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300">
+
+    <Frame.Template>
+
+        <ControlTemplate TargetType="{x:Type Frame}">
+
+            <Grid x:Name="ControlGrid">
+
+                <!-- TopToggleBar -->
+                <uc:TopToggleBar VerticalAlignment="Top">
+
+                    <!-- TopToggleBar Message Format -->
+                    <uc:TopToggleBar.Heading>
+                        <Binding StringFormat="{} 設定：{0}" 
+                                 Path="SelectedValue.Content"
+                                 ElementName="TypeCombobox"/>
+                    </uc:TopToggleBar.Heading>
+
+                    <StackPanel Orientation="Horizontal">
+
+                        <!-- IllustsRankingType -->
+                        <uc:DarkCombobox x:Name="TypeCombobox"
+                                         Height="50" 
+                                         Width="250" 
+                                         FontSize="30"
+                                         SelectedIndex="0" 
+                                         HorizontalAlignment="Left"
+                                         ImageLocation="/VioletPixiv;component/Resources/Images/white_icon/round_sort_white_48dp.png"
+                                         SelectionChanged="TypeCombobox_SelectionChanged">
+
+                            <ComboBoxItem>デイリー</ComboBoxItem>
+                            <ComboBoxItem>ウィークリー</ComboBoxItem>
+                            <ComboBoxItem>マンスリー</ComboBoxItem>
+                            <ComboBoxItem>ルーキー</ComboBoxItem>
+                            <ComboBoxItem>オリジナル</ComboBoxItem>
+                            <ComboBoxItem>男子に人気</ComboBoxItem>
+                            <ComboBoxItem>女子に人気</ComboBoxItem>
+
+                        </uc:DarkCombobox>
+
+                        <!-- Date -->
+                        <Border BorderThickness="2" 
+                                BorderBrush="white" 
+                                CornerRadius="5" 
+                                Margin="10,0,0,0">
+                            <StackPanel x:Name="DateSearchStackPanel" 
+                                        Orientation="Horizontal" >
+
+                                <!-- Year -->
+                                <uc:DarkCombobox x:Name="YearCombobox"
+                                                 Height="40" 
+                                                 Width="80" 
+                                                 FontSize="30"
+                                                 SelectedIndex="0"
+                                                 ItemsSource="{Binding Years, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                                                 SelectionChanged="ChangeDays_SelectionChanged"/>
+                                <TextBlock>年</TextBlock>
+
+                                <!-- Month -->
+                                <uc:DarkCombobox x:Name="MonthCombobox"
+                                                 Height="40" 
+                                                 Width="80" 
+                                                 FontSize="30"
+                                                 SelectedIndex="{qc:Binding '$P-1', P={Binding TargetDate.Month, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}}"
+                                                 SelectionChanged="ChangeDays_SelectionChanged">    
+                                    <sys:Int32>1</sys:Int32>
+                                    <sys:Int32>2</sys:Int32>
+                                    <sys:Int32>3</sys:Int32>
+                                    <sys:Int32>4</sys:Int32>
+                                    <sys:Int32>5</sys:Int32>
+                                    <sys:Int32>6</sys:Int32>
+                                    <sys:Int32>7</sys:Int32>
+                                    <sys:Int32>8</sys:Int32>
+                                    <sys:Int32>9</sys:Int32>
+                                    <sys:Int32>10</sys:Int32>
+                                    <sys:Int32>11</sys:Int32>
+                                    <sys:Int32>12</sys:Int32>
+
+                                </uc:DarkCombobox>
+                                <TextBlock>月</TextBlock>
+
+                                <!-- Day -->
+                                <uc:DarkCombobox x:Name="DayCombobox"
+                                                 Height="40"
+                                                 Width="80" 
+                                                 FontSize="30"
+                                                 SelectedIndex="{qc:Binding '$P-1', P={Binding TargetDate.Day, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}}"
+                                                 ItemsSource="{Binding Days, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                                                 SelectionChanged="ChangeDays_SelectionChanged"/>   
+                                <TextBlock>日</TextBlock>
+
+                                <Button x:Name="DateSearchButton" 
+                                        Content="Search"
+                                        Click="DateSearchButton_Click"/>
+
+                            </StackPanel>
+                        </Border>
+                        
+                    </StackPanel>
+
+                </uc:TopToggleBar>
+
+                <!-- Page -->
+                <ContentPresenter Grid.ZIndex="-1" 
+                                  Margin="0,50,0,0"/>
+                
+            </Grid>
+
+        </ControlTemplate>
+
+    </Frame.Template>
+    
+</Frame>

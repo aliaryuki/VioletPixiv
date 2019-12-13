@@ -1,0 +1,44 @@
+﻿<ItemsControl  x:Class="VioletPixiv.UIObject.UserControls.MultiImagesList"
+               x:Name="ItemsControlName"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:system="clr-namespace:System;assembly=mscorlib"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:local="clr-namespace:VioletPixiv.UIObject.UserControls"
+               xmlns:uc="clr-namespace:VioletPixiv.UIObject.UserControls">
+
+    <ItemsControl.Background>
+        <ImageBrush ImageSource="/VioletPixiv;component/Resources/Images/Loading_pic.png"
+                    Stretch="Uniform"/>
+    </ItemsControl.Background>
+
+    <ItemsControl.ItemTemplate>
+        <DataTemplate>
+
+            <Button x:Name="MultiImagesButton"
+                    Margin="5"
+                    Style="{StaticResource ImageButtonStyle}"
+                    Command="{StaticResource NewImageWindowCommand}">
+                
+                <!-- Open in BlurWindow -->
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource MultiBindingConverter}">
+                        <Binding Path="Tag" ElementName="ItemsControlName"/>
+                        <Binding />
+                    </MultiBinding>
+                </Button.CommandParameter>
+
+                <!-- Image and Download -->
+                <Image  Source="{Binding}">
+                    <Image.ContextMenu>
+                        <ContextMenu>
+                            <uc:DownloadMenuItem TargetImage="{Binding}"/>
+                        </ContextMenu>
+                    </Image.ContextMenu>
+                </Image>
+            </Button>
+
+        </DataTemplate>
+    </ItemsControl.ItemTemplate>
+
+</ItemsControl>

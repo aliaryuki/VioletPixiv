@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:cvt="clr-namespace:VioletPixiv.Converter">
+
+    <cvt:TagListToTagButtonListConverter x:Key="TagListToTagButtonListConverter"/>
+    <cvt:CaptionHTMLToTextConverter x:Key="CaptionHTMLToTextConverter"/>
+    <cvt:StackToNameListConverter x:Key="StackToNameListConverter"/>
+    <cvt:MultiBindingConverter x:Key="MultiBindingConverter"/>
+    <cvt:ThicknessBindingConverter x:Key="ThicknessBindingConverter"/>
+    <cvt:StackCountConverter x:Key="StackCountConverter"/>
+    
+</ResourceDictionary>

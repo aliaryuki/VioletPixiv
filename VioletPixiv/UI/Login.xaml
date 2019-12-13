@@ -1,0 +1,70 @@
+﻿<Page x:Class="VioletPixiv.LoginPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:VioletPixiv"
+      mc:Ignorable="d" 
+      Height="250" 
+      Width="600" 
+      Foreground="#FFF9FFC0">
+
+    <Grid Background="#FF593D3D">
+
+        <Grid Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition Height="1.5*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Account Input -->
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Center"
+                        Grid.Row="0">
+                
+                <Label Content="アカウント："
+                       Foreground="white" />
+                <TextBox x:Name="accountBox" 
+                         Height="30" 
+                         Width="280" 
+                         Background="{x:Null}" 
+                         BorderThickness="1"
+                         BorderBrush="#FFABADB3" 
+                         Foreground="White"
+                         IsReadOnly="False"/>
+                
+            </StackPanel>
+
+            <!-- Passwd Input -->
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Center"
+                        Grid.Row="1">
+
+                <Label Content="パスワード：" 
+                       Foreground="white" />
+                <PasswordBox x:Name="passwordBox" 
+                             Height="30"  
+                             Width="280" 
+                             Background="{x:Null}" 
+                             BorderBrush="#FFABADB3" 
+                             Foreground="White"/>
+            </StackPanel>
+
+            <!-- Loinbutton -->
+            <Button x:Name="LoginBtn" 
+                    Grid.Row="2" 
+                    Width="100" 
+                    Content="ログイン" 
+                    VerticalAlignment="Top" 
+                    Click="LoginBtn_Click"/>
+            
+            <!-- Login Message -->
+            <Label x:Name="errorLabel" 
+                   Grid.Row="2"
+                   VerticalAlignment="Bottom"
+                   />
+        </Grid>
+
+    </Grid>
+</Page>

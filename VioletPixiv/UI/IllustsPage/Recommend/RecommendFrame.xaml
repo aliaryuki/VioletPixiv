@@ -1,0 +1,56 @@
+﻿<Frame x:Class="VioletPixiv.RecommendFrame"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:qc="clr-namespace:QuickConverter;assembly=QuickConverter"
+      xmlns:uc="clr-namespace:VioletPixiv.UIObject.UserControls"
+      xmlns:local="clr-namespace:VioletPixiv"
+      NavigationUIVisibility="Hidden"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300">
+
+    <Frame.Template>
+
+        <ControlTemplate TargetType="{x:Type Frame}" >
+
+            <Grid x:Name="ControlGrid">
+
+                <!-- TopToggleBar -->
+                <uc:TopToggleBar VerticalAlignment="Top">
+
+                    <!-- TopToggleBar Message Format -->
+                    <uc:TopToggleBar.Heading>
+                        <Binding StringFormat="{} 設定：{0}" 
+                                 Path="SelectedValue.Content" 
+                                 ElementName="TypeCombobox"/>
+                    </uc:TopToggleBar.Heading>
+
+                    <!-- IllustsRecommendedType -->
+                    <uc:DarkCombobox x:Name="TypeCombobox"
+                                     Height="50" 
+                                     Width="250" 
+                                     FontSize="30"
+                                     SelectedIndex="0" 
+                                     HorizontalAlignment="Left"
+                                     ImageLocation="/VioletPixiv;component/Resources/Images/white_icon/round_sort_white_48dp.png"
+                                     SelectionChanged="MenuCombobox_Changed">
+
+                        <ComboBoxItem>イラスト</ComboBoxItem>
+                        <ComboBoxItem>マンガ</ComboBoxItem>
+
+                    </uc:DarkCombobox>
+
+                </uc:TopToggleBar>
+                
+                <!-- Page -->
+                <ContentPresenter Grid.ZIndex="-1" 
+                                  Margin="0,50,0,0"/>
+                
+            </Grid>
+
+        </ControlTemplate>
+
+    </Frame.Template>
+    
+</Frame>

@@ -1,0 +1,40 @@
+﻿<ToggleButton x:Class="VioletPixiv.UIObject.UserControls.ToggleOnOffButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:VioletPixiv.UIObject.UserControls"
+             IsChecked="{Binding Path=Tag, RelativeSource={RelativeSource Self}, UpdateSourceTrigger=PropertyChanged}"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center"
+             Background="Transparent"
+             Height="100"
+             Width="200">
+
+    <ToggleButton.Template>
+        <ControlTemplate TargetType="{x:Type ToggleButton}">
+            <ContentPresenter x:Name="contentPresenter" />
+        </ControlTemplate>
+    </ToggleButton.Template>
+
+    <ToggleButton.Style>
+        <Style TargetType="ToggleButton">
+            <!-- Default Image -->
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Source="/VioletPixiv;component/Resources/Images/white_icon/round_toggle_off_white_48dp.png"></Image>
+                </Setter.Value>
+            </Setter>
+            <!-- Click and Change Image -->
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <Image Source="/VioletPixiv;component/Resources/Images/white_icon/round_toggle_on_white_48dp.png" Stretch="Uniform" ></Image>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </ToggleButton.Style>
+
+</ToggleButton>

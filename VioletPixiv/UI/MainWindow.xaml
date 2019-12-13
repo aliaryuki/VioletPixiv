@@ -1,0 +1,384 @@
+﻿<metro:MetroWindow x:Name="metroWindow" x:Class="VioletPixiv.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:chrome="http://schemes.grabacr.net/winfx/2014/chrome"
+        xmlns:metro="http://schemes.grabacr.net/winfx/2014/controls"
+        xmlns:uc="clr-namespace:VioletPixiv.UIObject.UserControls"
+        xmlns:qc="clr-namespace:QuickConverter;assembly=QuickConverter"
+        xmlns:local="clr-namespace:VioletPixiv"
+        xmlns:vm="clr-namespace:VioletPixiv.ViewModel"
+                      
+        mc:Ignorable="d"
+        Title="Violet Pixiv 開発中"
+        MinHeight="675" 
+        MinWidth="1200"
+        MaxHeight="{Binding SystemParameters.PrimaryScreenHeight}"
+        MaxWidth="{Binding SystemParameters.PrimaryScreenWidth}"
+                     
+        Background="{DynamicResource ThemeBrushKey}"
+        IsRestoringWindowPlacement="True"
+        WindowStyle="SingleBorderWindow"
+		UseLayoutRounding="True"
+		TextOptions.TextFormattingMode="Display"
+        >
+
+    <Grid x:Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="41" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- TopBar -->
+        <Border Grid.Row="0"
+				metro:MetroWindow.IsCaptionBar="True">
+            <Grid Panel.ZIndex="100">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50*" />
+                    <ColumnDefinition Width="200*" />
+                    <ColumnDefinition Width="857*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="0" />
+                </Grid.RowDefinitions>
+
+                <!-- Pixiv ICon -->
+                <metro:CaptionIcon Grid.Column="0">
+                    <Image Height="28" 
+                           VerticalAlignment="Center" 
+                           Source="/VioletPixiv;component/Resources/Images/pixiv.ico"/>
+                </metro:CaptionIcon>
+
+                <!-- Program Title -->
+                <TextBlock Grid.Column="1"
+						   Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=Title}"
+						   TextTrimming="CharacterEllipsis"
+						   Foreground="{DynamicResource ForegroundBrushKey}"
+						   FontFamily="Segoe UI Light"
+						   FontSize="18"
+						   Margin="1,9,0,10"
+						   VerticalAlignment="Center"
+                           Height="24" />
+
+                <!-- RefreshButton and logout -->
+                <StackPanel Orientation="Horizontal"
+                            Grid.Column="2" 
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right">
+                    <!-- RefreshButton-->
+                    <metro:CaptionButton x:Name="FrameRefreshButton"
+                                            Height="28"
+                                            Width="28"
+                                            Click="FrameRefreshButton_Click">
+                        <Button.Background>
+                            <ImageBrush ImageSource="/VioletPixiv;component/Resources/Images/white_icon/round_replay_white_48dp.png"></ImageBrush>
+                        </Button.Background>
+                    </metro:CaptionButton>
+                    <!-- logout -->
+                    <metro:CaptionButton Width="100"
+                                         Margin="20,0,0,0"
+                                         Foreground="White"
+                                         Click="Logout_Click">
+                        <Border BorderThickness="1" 
+                                BorderBrush="White" 
+                                Padding="1">
+                            <TextBlock Text="Logout"/>
+                        </Border>
+                    </metro:CaptionButton>
+                </StackPanel>
+
+                <!-- SystemButtons -->
+                <metro:SystemButtons Grid.Column="3"
+										VerticalAlignment="Center" 
+                                        Height="26" 
+                                        Margin="0,2,0,0" />
+            </Grid>
+        </Border>
+
+        <!-- Grid Container -->
+        <Grid x:Name="MainGridR1" 
+              Grid.Row="1"  
+              Panel.ZIndex="4" />
+
+        <!-- TabControl -->
+        <TabControl x:Name="LeftTab" 
+                    Grid.Row="1" 
+                    HorizontalAlignment="Right"  
+                    VerticalAlignment="Stretch" 
+                    Panel.ZIndex="3"
+                    Width="{qc:MultiBinding '$P0 - $P1*0.25' , 
+                            P0={Binding Path=ActualWidth ,ElementName=MainGrid, UpdateSourceTrigger=PropertyChanged},
+                            P1={Binding Path=ActualWidth,ElementName=Tab0, UpdateSourceTrigger=PropertyChanged}}"
+                    SelectionChanged ="SelectionChanged">
+
+            <TabControl.Style>
+                <Style TargetType="{x:Type TabControl}">
+                    <Setter Property="HorizontalContentAlignment"
+							Value="Stretch" />
+                    <Setter Property="VerticalContentAlignment"
+							Value="Stretch" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TabControl}">
+                                <Grid>
+
+                                    <Grid Panel.ZIndex="3">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="240"/>
+                                            <ColumnDefinition Width="4*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- LeftTabGrid -->
+                                        <Grid x:Name="LeftTabGrid" 
+                                              Grid.Column="0" 
+                                              VerticalAlignment="Stretch"
+                                              Panel.ZIndex="3">
+
+                                            <Grid.Margin>
+                                                <MultiBinding Converter="{StaticResource ThicknessBindingConverter}" UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding ElementName="MainGrid" Path="ActualWidth" />
+                                                    <Binding ElementName="LeftTab" Path="ActualWidth" />
+                                                    <Binding ElementName="LeftTabGrid" Path="ActualWidth" />
+                                                </MultiBinding>
+                                            </Grid.Margin>
+
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="{qc:Binding '$P*3/4', P={Binding ElementName=LeftTabGrid, Path=ActualWidth, UpdateSourceTrigger=PropertyChanged}}"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <!-- Header -->
+                                            <Grid x:Name="HeaderGridRow" Grid.Row="0" Background="{DynamicResource BackgroundBrushKey}">
+
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <!-- Header Image -->
+                                                <uc:HeaderButton  x:Name="HeaderButton" 
+                                                                  Grid.Column="0"
+                                                                  TargetUserID="{Binding UserData.TargetUserDetail.User.Id, UpdateSourceTrigger=PropertyChanged}">
+                                                    <uc:HeaderButton.Background>
+                                                        <ImageBrush ImageSource="{Binding UserData.IllustHeader, UpdateSourceTrigger=PropertyChanged}"></ImageBrush>
+                                                    </uc:HeaderButton.Background>
+                                                </uc:HeaderButton>
+
+                                                <!-- LeftTab Expand and Collapse -->
+                                                <ToggleButton Grid.Column="1" 
+                                                              Click="TabControlToggle_Click">
+                                                    <Image Grid.Column="1" Source="/VioletPixiv;component/Resources/Images/white_icon/round_apps_white_48dp.png"></Image>
+                                                </ToggleButton>
+
+                                            </Grid>
+
+                                            <!-- IsItemsHost -->
+                                            <StackPanel x:Name="HeaderPanelMain"
+                                                        Grid.Row="1"
+												        IsItemsHost="True"
+												        Background="{DynamicResource BackgroundBrushKey}"/>
+
+                                        </Grid>
+
+                                    </Grid>
+
+                                    <!-- InnerGrid Container -->
+                                    <Grid x:Name="InnerGrid" 
+                                          Panel.ZIndex="1" 
+                                          HorizontalAlignment="Right"
+                                          Width="{qc:MultiBinding '$P0 - $P1' , 
+                                                P0={Binding Path=ActualWidth ,ElementName=MainGrid, UpdateSourceTrigger=PropertyChanged},
+                                                P1={Binding Path=ActualWidth,ElementName=LeftTabGrid, UpdateSourceTrigger=PropertyChanged}}"/>
+
+                                    <ContentPresenter Grid.Column="1"
+                                                      Panel.ZIndex="-1"
+													  ContentSource="SelectedContent"/>
+                                </Grid>
+
+                            </ControlTemplate>
+
+                        </Setter.Value>
+                    </Setter>
+
+                    <Setter Property="ItemContainerStyle">
+                        <Setter.Value>
+                            <Style TargetType="{x:Type TabItem}">
+                                <Setter Property="OverridesDefaultStyle"
+										Value="True" />
+                                <Setter Property="Height"
+										Value="38" />
+                                <Setter Property="Foreground"
+										Value="{DynamicResource ForegroundBrushKey}" />
+                                <Setter Property="Background"
+										Value="Transparent" />
+                                <Setter Property="Margin" 
+                                        Value="0,10,0,10"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type TabItem}">
+                                            <!-- Normal Style -->
+                                            <Border x:Name="Border"
+													Background="{TemplateBinding Background}">
+                                                <ContentPresenter x:Name="ContentSite"
+																  ContentSource="Header" />
+                                            </Border>
+                                            <!-- IsSelected and IsMouseOver -->
+                                            <ControlTemplate.Triggers>
+
+                                                <Trigger Property="IsSelected"
+														 Value="True">
+                                                    <Setter Property="Background"
+															Value="{DynamicResource HighlightBackgroundBrushKey}" />
+                                                </Trigger>
+                                                <Trigger SourceName="Border"
+														 Property="IsMouseOver"
+														 Value="True">
+                                                    <Setter Property="Background"
+															Value="{DynamicResource ActiveBackgroundBrushKey}" />
+                                                    <Setter Property="Foreground"
+															Value="{DynamicResource ActiveForegroundBrushKey}" />
+                                                </Trigger>
+
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Setter.Value>
+                    </Setter>
+
+                </Style>
+            </TabControl.Style>
+
+
+            <TabControl.Resources>
+
+                <Style x:Key="TabHeaderTextStyleKey"
+					   TargetType="{x:Type TextBlock}">
+                    <Setter Property="VerticalAlignment"
+							Value="Center" />
+                    <Setter Property="HorizontalAlignment"
+                            Value="Center"/>
+                    <Setter Property="FontSize"
+                            Value="20"/>
+                    <Setter Property="FontFamily"
+                            Value="{StaticResource Mamelon}"/>
+                </Style>
+
+            </TabControl.Resources>
+
+            <!--0 Recommend-->
+            <TabItem x:Name="Tab0">
+
+                <TabItem.Header>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*"  x:Name="BaseIcon"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="おすすめ" Style="{StaticResource TabHeaderTextStyleKey}"/>
+                        <Image Grid.Column="1" Source="/VioletPixiv;component/Resources/Images/white_icon/round_thumb_up_white_48dp.png"/>
+                    </Grid>
+
+                </TabItem.Header>
+
+                <local:RecommendFrame x:Name="F0"></local:RecommendFrame>
+
+            </TabItem>
+
+            <!--1 Ranking-->
+            <TabItem x:Name="Tab1">
+
+                <TabItem.Header>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="ランキング" Style="{StaticResource TabHeaderTextStyleKey}"/>
+                        <Image Grid.Column="1" Source="/VioletPixiv;component/Resources/Images/white_icon/round_show_chart_white_48dp.png"></Image>
+                    </Grid>
+
+                </TabItem.Header>
+
+                <local:RankingFame x:Name="F1"></local:RankingFame>
+
+            </TabItem>
+
+            <!--2 BookMark-->
+            <TabItem x:Name="Tab2">
+
+                <TabItem.Header>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="ブックマーク" Style="{StaticResource TabHeaderTextStyleKey}"/>
+                        <Image Grid.Column="1" Source="/VioletPixiv;component/Resources/Images/white_icon/round_favorite_white_48dp.png">
+
+                        </Image>
+
+
+                    </Grid>
+
+                </TabItem.Header>
+
+                <Frame x:Name="F2" NavigationUIVisibility="Hidden"/>
+
+            </TabItem>
+
+            <!--3 Search-->
+            <TabItem x:Name="Tab3">
+
+                <TabItem.Header>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="検索" Style="{StaticResource TabHeaderTextStyleKey}"/>
+                        <Image Grid.Column="1" Source="/VioletPixiv;component/Resources/Images/white_icon/round_search_white_48dp.png"></Image>
+                    </Grid>
+
+                </TabItem.Header>
+
+                <local:SearchArtistFrame x:Name="F3"></local:SearchArtistFrame>
+
+            </TabItem>
+
+            <!--4 UserList-->
+            <TabItem x:Name="Tab4">
+
+                <TabItem.Header>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="フォロー" Style="{StaticResource TabHeaderTextStyleKey}"/>
+                        <Image Grid.Column="1" Source="/VioletPixiv;component/Resources/Images/white_icon/round_people_white_48dp.png"></Image>
+                    </Grid>
+
+                </TabItem.Header>
+
+                <Frame x:Name="F4" NavigationUIVisibility="Hidden"/>
+            </TabItem>
+
+        </TabControl>
+
+    </Grid>
+</metro:MetroWindow>
