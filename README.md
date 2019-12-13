@@ -1,6 +1,5 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/aliarvivi/VioletPixiv?color=green)
 ![GitHub](https://img.shields.io/github/license/aliarvivi/VioletPixiv)
-![GitHub All Releases](https://img.shields.io/github/downloads/aliarvivi/VioletPixiv/total)
 
 # VioletPixiv (ヴァイオレットピクシブ)
 
