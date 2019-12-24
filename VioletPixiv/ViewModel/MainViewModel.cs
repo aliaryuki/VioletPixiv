@@ -11,27 +11,15 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using VioletPixiv.ViewModel;
 
 namespace VioletPixiv
 {
     /// <summary>
     /// MainWindow
     /// </summary>
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : NotifyImplementClass
     {
-        #region INotifyPropertyChanged Implementation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-
         #region OnPropertyChanged Variable
 
         private UserTemplate<UserDetail> _UserData;

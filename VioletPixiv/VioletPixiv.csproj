@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D03FBA65-AF3B-41CB-AED8-F47B31E3F82E}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>VioletPixiv</RootNamespace>
     <AssemblyName>VioletPixiv</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
@@ -119,6 +119,8 @@
     <Compile Include="Command\UserListSearchCommand.cs" />
     <Compile Include="Command\NewImageWindowCommand.cs" />
     <Compile Include="Command\TagCommand.cs" />
+    <Compile Include="Converter\YearIndexConverter.cs" />
+    <Compile Include="Converter\MonthIndexConverter.cs" />
     <Compile Include="Converter\MultiBindingConverter.cs" />
     <Compile Include="Converter\StackCountConverter.cs" />
     <Compile Include="lib\NavigateExtend.cs" />
@@ -231,8 +233,10 @@
     <Compile Include="UI\UserConfig.xaml.cs">
       <DependentUpon>UserConfig.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\RankingFrameViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\IllustsViewModel.cs" />
+    <Compile Include="ViewModel\NotifyImplementClass.cs" />
     <Page Include="Resources\TextBoxStyleDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -15,23 +15,9 @@ using Pixeez.Objects;
 
 namespace VioletPixiv
 {
-    public class UserTemplate<T> : NeedToLoadImages, INotifyPropertyChanged
-        where T : HasUser
+    public class UserTemplate<T> : NeedToLoadImages
+        where T : IHasUser
     {
-
-        #region INotifyPropertyChanged Implementation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-
         #region OnPropertyChanged Variable
 
         protected BitmapImage _IllustHeader;

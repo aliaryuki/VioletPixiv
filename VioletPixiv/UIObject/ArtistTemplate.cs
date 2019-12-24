@@ -13,10 +13,11 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using Pixeez.Objects;
+using VioletPixiv.ViewModel;
 
 namespace VioletPixiv
 {
-    public abstract class NeedToLoadImages
+    public class NeedToLoadImages : NotifyImplementClass
     {
         #pragma warning disable CS1998
         public virtual async Task GetAllImage()
@@ -26,20 +27,8 @@ namespace VioletPixiv
         #pragma warning restore CS1998
     }
 
-    public class ArtistTemplate : NeedToLoadImages, INotifyPropertyChanged
+    public class ArtistTemplate : NeedToLoadImages
     {
-        #region INotifyPropertyChanged Implementation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
 
         #region OnPropertyChanged Variable
 

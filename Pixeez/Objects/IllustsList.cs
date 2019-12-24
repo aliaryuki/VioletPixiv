@@ -7,21 +7,10 @@ using System.Threading.Tasks;
 
 namespace Pixeez.Objects
 {
-    public abstract class HasNextUrl<T> {
 
-        public virtual List<T> GetList()
-        {
-            throw new NotImplementedException();
-        }
-
-        [JsonProperty("next_url")]
-        public object NextUrl { get; set; }
-
-    }
-
-    public class IllustsList : HasNextUrl<Illust>
+    public class IllustsList : HasNextUrl
     {
-        public override List<Illust> GetList()
+        public override IEnumerable<object> GetList()
         {
             return this.Illusts;
         }
@@ -34,7 +23,7 @@ namespace Pixeez.Objects
 
     }
 
-    public class Illust
+    public class Illust : IHasUser, IMainInfoObject
     {
         [JsonProperty("id")]
         public long Id { get; set; }
@@ -53,9 +42,6 @@ namespace Pixeez.Objects
 
         [JsonProperty("restrict")]
         public int? Restrict { get; set; }
-
-        [JsonProperty("user")]
-        public User User { get; set; }
 
         [JsonProperty("tags")]
         public List<Tag> Tags { get; set; }
@@ -107,6 +93,10 @@ namespace Pixeez.Objects
 
         [JsonProperty("total_comments")]
         public int? TotalComments { get; set; }
+
+        [JsonProperty("user")]
+        public User User { get; set; }
+
     }
 
     public class Tag

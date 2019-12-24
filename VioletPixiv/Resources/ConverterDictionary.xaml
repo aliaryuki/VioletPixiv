@@ -8,5 +8,7 @@
     <cvt:MultiBindingConverter x:Key="MultiBindingConverter"/>
     <cvt:ThicknessBindingConverter x:Key="ThicknessBindingConverter"/>
     <cvt:StackCountConverter x:Key="StackCountConverter"/>
+    <cvt:MonthIndexConverter x:Key="MonthIndexConverter"/>
+    <cvt:YearIndexConverter x:Key="YearIndexConverter"/>
     
 </ResourceDictionary>

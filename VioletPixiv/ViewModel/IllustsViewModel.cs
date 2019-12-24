@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,113 +18,98 @@ namespace VioletPixiv.ViewModel
     /// <summary>
     /// Template
     /// </summary>
-    public class CollectionViewModelTemplate<T1, T2, T3> : INotifyPropertyChanged
+    public class CollectionViewModelTemplate<T1, T2> : NotifyImplementClass
         where T1 : NeedToLoadImages
-        where T2 : HasNextUrl<T3>
+        where T2 : HasNextUrl
     {
-        #region INotifyPropertyChanged Implementation
+        protected string CollectionNextUrl = "";
+        protected Stack<T1> LoadingImagesCollectionStack = new Stack<T1>();
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-
-        #region OnPropertyChanged Variable
+        #region CollectionListPartial PropertyChanged
 
         protected ObservableCollection<T1> _CollectionListPartial = new ObservableCollection<T1>();
+
         public ObservableCollection<T1> CollectionListPartial
         {
             get { return this._CollectionListPartial; }
             set {
                 this._CollectionListPartial = value;
-                OnPropertyChanged("CollectionListPartial");
+                this.RaisePropertyChanged();
             }
         }
 
         #endregion
 
-        #region private fields
-
-        protected Stack<T1> CollectionObjectList = new Stack<T1>();
-        protected string CollectionNextUrl = "";
-
-        #endregion
-
-        #region [API] GetCollectionList
-
-        protected Task<T2> GetNextCollectionList(string nextURL) {
-            return MainWindow.PixivWindow.AuthToken.AccessApiAsync<T2>(Pixeez.MethodType.GET, nextURL, null, isAppAPI: true);
-        }
-
-        protected virtual Task<T2> GetCollectionList() {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
-        /// Reload Collection Data From API
+        /// Init All Data
         /// </summary>
-        /// <returns> [Task] Next CollectionList </returns>
-        protected async Task<Stack<T1>> UpdateCollectionTemplateSource()
+        public void InitializeData()
         {
-            if (this.CollectionNextUrl == null) return null;
-
-            var CollectionSourceList = (this.CollectionNextUrl == "") ? await GetCollectionList() : await GetNextCollectionList(CollectionNextUrl);
-            this.CollectionNextUrl = (string)CollectionSourceList.NextUrl;
-
-            var CollectionList = new Stack<T1>();
-            foreach (var CollectionSource in CollectionSourceList.GetList().AsEnumerable().Reverse())
-            {
-                CollectionList.Push((T1)Activator.CreateInstance(typeof(T1), new object[] { CollectionSource, false, false }));
-            }
-            return CollectionList;
-        }
-
-
-        #endregion
-
-        /// <summary>
-        /// Reset All Data
-        /// </summary>
-        public void InitData()
-        {
-
             this.CollectionNextUrl = "";
-            this.CollectionObjectList = new Stack<T1>();
+            this.LoadingImagesCollectionStack = new Stack<T1>();
             this.CollectionListPartial = new ObservableCollection<T1>();
-
         }
 
         /// <summary>
-        /// Update the List<T1> to View 
+        /// Update Data to View 
         /// </summary>
-        /// <param name="NumToShow">How Many Artists should show</param>
-        public async Task ShowCollectionTemplate(int NumToShow)
+        public async Task ShowCollectionTemplate(int NumNeedToShow)
         {
-            // First, Get CollectionList
-            this.CollectionObjectList = (this.CollectionObjectList.Count == 0)? await UpdateCollectionTemplateSource() : this.CollectionObjectList;
             
-            int Counter = 0;
+            this.LoadingImagesCollectionStack = (this.LoadingImagesCollectionStack.Count == 0)? await this.GetLoadingImagesCollectionStack() : 
+                                                                                                      this.LoadingImagesCollectionStack;
+
+            var AlreadyShowNum = this.PopCollectionStackAndPropertyChangeToView(this.LoadingImagesCollectionStack, NumNeedToShow);
+
+            if (AlreadyShowNum < NumNeedToShow) await this.ShowCollectionTemplate(NumNeedToShow - AlreadyShowNum);
+
+        }
+
+        protected int PopCollectionStackAndPropertyChangeToView(Stack<T1> CollectionStack, int NumNeedToShow)
+        {
+            int NumToShowCounter = 0;
             var CollectionListTmp = CollectionListPartial;
-            //Put [NumToShow] of Collection into *CollectionListPartial* 
-            while (this.CollectionObjectList.Count != 0 && Counter < NumToShow)
+
+            while (this.LoadingImagesCollectionStack.Count != 0 && NumToShowCounter < NumNeedToShow)
             {
-                var CollectionElement = this.CollectionObjectList.Pop();
-                Task GetAllImageTask = CollectionElement.GetAllImage();
+                var CollectionElement = this.LoadingImagesCollectionStack.Pop();
+                _ = CollectionElement.GetAllImage();
                 CollectionListTmp.Add(CollectionElement);
-                Counter++;
+                NumToShowCounter++;
             }
             // Update To View
             CollectionListPartial = CollectionListTmp;
 
-            // If exceed, Get New List
-            if (Counter < NumToShow) await this.ShowCollectionTemplate(NumToShow - Counter);
+            return NumToShowCounter;
+        }
 
+        protected virtual Task<T2> GetCollectionEnumerable() {
+            throw new NotImplementedException();
+        }
+
+        protected virtual Task<T2> GetNextCollectionEnumerable(string nextURL) {
+            return MainWindow.PixivWindow.AuthToken.AccessApiAsync<T2>(Pixeez.MethodType.GET, nextURL, null, isAppAPI: true);
+        }
+
+        protected async Task<Stack<T1>> GetLoadingImagesCollectionStack()
+        {
+            if (this.CollectionNextUrl == null) return null;
+
+            var LoadingImagesCollectionStack = new Stack<T1>();
+            foreach (var PerNotLoaingImagesCollection in (await this.GetNotLoaingImagesCollection()).GetList().AsEnumerable().Reverse())
+            {
+                LoadingImagesCollectionStack.Push((T1)Activator.CreateInstance(typeof(T1), new object[] { PerNotLoaingImagesCollection, false, false }));
+            }
+            return LoadingImagesCollectionStack;
+        }
+
+        protected async Task<T2> GetNotLoaingImagesCollection()
+        {
+            var CollectionList = (this.CollectionNextUrl == "") ? await this.GetCollectionEnumerable() : 
+                                                                  await this.GetNextCollectionEnumerable(CollectionNextUrl);
+            this.CollectionNextUrl = (string)CollectionList.NextUrl;
+
+            return CollectionList;
         }
 
     }
@@ -131,7 +117,7 @@ namespace VioletPixiv.ViewModel
     /// <summary>
     /// RecommendPage
     /// </summary>
-    public class IllustsRecommendedViewModel : CollectionViewModelTemplate<ArtistTemplate, IllustsList, Illust>
+    public class IllustsRecommendedViewModel : CollectionViewModelTemplate<ArtistTemplate, IllustsList>
     {
         private IllustsRecommendedType IllustsRecommendedType;
 
@@ -144,7 +130,7 @@ namespace VioletPixiv.ViewModel
         /// [API] Return Recommended Data
         /// </summary>
         /// [override] CollectionViewModelTemplate 
-        protected override Task<IllustsList> GetCollectionList() {
+        protected override Task<IllustsList> GetCollectionEnumerable() {
 
             switch (IllustsRecommendedType)
             {
@@ -161,7 +147,7 @@ namespace VioletPixiv.ViewModel
     /// <summary>
     /// RankingPage
     /// </summary>
-    public class IllustsRankingViewModel : CollectionViewModelTemplate<ArtistTemplate, IllustsList, Illust>
+    public class IllustsRankingViewModel : CollectionViewModelTemplate<ArtistTemplate, IllustsList>
     {
         private IllustsRankingType IllustsRankingType;
         private String DateString;
@@ -177,14 +163,14 @@ namespace VioletPixiv.ViewModel
         /// [API] Return Ranking Data
         /// </summary>
         /// [override] CollectionViewModelTemplate 
-        protected override Task<IllustsList> GetCollectionList() { return MainWindow.PixivWindow.AuthToken.GetIllustRanking(dayMode: this.IllustsRankingType.ToString(),
+        protected override Task<IllustsList> GetCollectionEnumerable() { return MainWindow.PixivWindow.AuthToken.GetIllustRanking(dayMode: this.IllustsRankingType.ToString(),
                                                                                                                             date: this.DateString); }
     }
 
     /// <summary>
     /// BookMarkPage
     /// </summary>
-    public class IllustsBookmarksViewModel : CollectionViewModelTemplate<ArtistTemplate, IllustsList, Illust>
+    public class IllustsBookmarksViewModel : CollectionViewModelTemplate<ArtistTemplate, IllustsList>
     {
         private long IllustID;
 
@@ -197,13 +183,13 @@ namespace VioletPixiv.ViewModel
         /// [API] Return Bookmark Data
         /// </summary>
         /// [override] CollectionViewModelTemplate 
-        protected override Task<IllustsList> GetCollectionList() { return MainWindow.PixivWindow.AuthToken.GetUserBookmarkIllusts(this.IllustID); }
+        protected override Task<IllustsList> GetCollectionEnumerable() { return MainWindow.PixivWindow.AuthToken.GetUserBookmarkIllusts(this.IllustID); }
     }
 
     /// <summary>
     /// SearchArtistPage
     /// </summary>
-    public class IllustsSearchViewModel : CollectionViewModelTemplate<ArtistTemplate, IllustsList, Illust>
+    public class IllustsSearchViewModel : CollectionViewModelTemplate<ArtistTemplate, IllustsList>
     {
         private String SearchKeyWord;
         private IllustsSearchSortType IllustsSearchSortType;
@@ -218,7 +204,7 @@ namespace VioletPixiv.ViewModel
         /// [API] Return Search Data
         /// </summary>
         /// [override] CollectionViewModelTemplate 
-        protected override Task<IllustsList> GetCollectionList() {
+        protected override Task<IllustsList> GetCollectionEnumerable() {
 
             switch (this.IllustsSearchSortType)
             {
@@ -235,7 +221,7 @@ namespace VioletPixiv.ViewModel
     /// <summary>
     /// UserListPage
     /// </summary>
-    public class UsersViewModel : CollectionViewModelTemplate<UserTemplate<UserPreviews>, UserPreviewsList, UserPreviews>
+    public class UsersViewModel : CollectionViewModelTemplate<UserTemplate<UserPreviews>, UserPreviewsList>
     {
         private long UserID;
 
@@ -247,13 +233,13 @@ namespace VioletPixiv.ViewModel
             this.UserID = userID;
         }
         // [override] CollectionViewModelTemplate 
-        protected override Task<UserPreviewsList> GetCollectionList() { return MainWindow.PixivWindow.AuthToken.GetUserFollowing(this.UserID); }
+        protected override Task<UserPreviewsList> GetCollectionEnumerable() { return MainWindow.PixivWindow.AuthToken.GetUserFollowing(this.UserID); }
     }
 
     /// <summary>
     /// UserDataFrame
     /// </summary>
-    public class IllustsUserViewModel : CollectionViewModelTemplate<ArtistTemplate, IllustsList, Illust>
+    public class IllustsUserViewModel : CollectionViewModelTemplate<ArtistTemplate, IllustsList>
     {
         private long UserID;
         #region OnPropertyChanged Variable
@@ -302,7 +288,7 @@ namespace VioletPixiv.ViewModel
         /// [API] Return User Data
         /// </summary>
         /// [override] CollectionViewModelTemplate 
-        protected override Task<IllustsList> GetCollectionList() { return MainWindow.PixivWindow.AuthToken.GetUserIllusts(this.UserID); }
+        protected override Task<IllustsList> GetCollectionEnumerable() { return MainWindow.PixivWindow.AuthToken.GetUserIllusts(this.UserID); }
 
 
         public void GetUserDataSource(UserDetail TheTargetUser)
@@ -376,21 +362,8 @@ namespace VioletPixiv.ViewModel
     /// <summary>
     /// PictureFrame
     /// </summary>
-    public class IllustDetailViewModel : INotifyPropertyChanged
+    public class IllustDetailViewModel : NotifyImplementClass
     {
-        #region INotifyPropertyChanged Implementation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-
         #region OnPropertyChanged Variable
 
         private ArtistTemplate _TargetArtistsTemplate;
@@ -416,6 +389,5 @@ namespace VioletPixiv.ViewModel
         }
 
     }
-
 
 }

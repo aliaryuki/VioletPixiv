@@ -6,6 +6,7 @@
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       xmlns:qc="clr-namespace:QuickConverter;assembly=QuickConverter"
       xmlns:uc="clr-namespace:VioletPixiv.UIObject.UserControls"
+      xmlns:vm="clr-namespace:VioletPixiv.ViewModel"
       xmlns:local="clr-namespace:VioletPixiv"
       NavigationUIVisibility="Hidden"
       mc:Ignorable="d" 
@@ -18,7 +19,11 @@
             <Grid x:Name="ControlGrid">
 
                 <!-- TopToggleBar -->
-                <uc:TopToggleBar VerticalAlignment="Top">
+                <uc:TopToggleBar x:Name="MainToggleBar" VerticalAlignment="Top">
+
+                    <uc:TopToggleBar.DataContext>
+                        <vm:RankingFrameViewModel/>
+                    </uc:TopToggleBar.DataContext>
 
                     <!-- TopToggleBar Message Format -->
                     <uc:TopToggleBar.Heading>
@@ -62,9 +67,8 @@
                                                  Height="40" 
                                                  Width="80" 
                                                  FontSize="30"
-                                                 SelectedIndex="0"
-                                                 ItemsSource="{Binding Years, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                                 SelectionChanged="ChangeDays_SelectionChanged"/>
+                                                 SelectedIndex="{Binding SelectedYear, Mode=TwoWay, Converter={StaticResource YearIndexConverter}}"
+                                                 ItemsSource="{Binding Years, Mode=OneWay}"/>
                                 <TextBlock>年</TextBlock>
 
                                 <!-- Month -->
@@ -72,8 +76,7 @@
                                                  Height="40" 
                                                  Width="80" 
                                                  FontSize="30"
-                                                 SelectedIndex="{qc:Binding '$P-1', P={Binding TargetDate.Month, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}}"
-                                                 SelectionChanged="ChangeDays_SelectionChanged">    
+                                                 SelectedIndex="{Binding SelectedMonth, Mode=TwoWay, Converter={StaticResource MonthIndexConverter}}">    
                                     <sys:Int32>1</sys:Int32>
                                     <sys:Int32>2</sys:Int32>
                                     <sys:Int32>3</sys:Int32>
@@ -95,9 +98,8 @@
                                                  Height="40"
                                                  Width="80" 
                                                  FontSize="30"
-                                                 SelectedIndex="{qc:Binding '$P-1', P={Binding TargetDate.Day, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}}"
-                                                 ItemsSource="{Binding Days, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
-                                                 SelectionChanged="ChangeDays_SelectionChanged"/>   
+                                                 SelectedIndex="{qc:Binding '$P-1', P={Binding SelectedDay, Mode=TwoWay}}"
+                                                 ItemsSource="{Binding Days, Mode=OneWay}"/>   
                                 <TextBlock>日</TextBlock>
 
                                 <Button x:Name="DateSearchButton" 

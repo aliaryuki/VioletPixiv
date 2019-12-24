@@ -103,6 +103,7 @@ namespace Pixeez
     {
         public string AccessToken { get; private set; }
         public Authorize Auth { get; private set; }
+        private DateTime ExpireTime;
         private string username;
         private string password;
 
@@ -112,6 +113,7 @@ namespace Pixeez
             this.Auth = auth;
             this.username = username;
             this.password = password;
+            this.ExpireTime = DateTime.Today.ToLocalTime().AddSeconds(this.Auth.ExpiresIn);
         }
 
         private async Task RefreshToken()
@@ -203,8 +205,16 @@ namespace Pixeez
                         break;
 
                     default:
-                        await RefreshToken();
-                        break;
+                        if(DateTime.Compare(DateTime.Today.ToLocalTime(), ExpireTime) > 0)
+                        {
+                            await this.RefreshToken();
+                            break;
+                        }
+                        else
+                        {
+                            return asyncResponse;
+                        }
+                            
                 }
                 return await this.SendRequestAsync(type, url, param, headers);
             }

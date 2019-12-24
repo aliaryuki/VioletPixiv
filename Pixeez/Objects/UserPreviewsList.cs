@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Pixeez.Objects
 {
-    public class UserPreviewsList : HasNextUrl<UserPreviews>
+    public class UserPreviewsList : HasNextUrl
     {
-        public override List<UserPreviews> GetList()
+        public override IEnumerable<object> GetList()
         {
             return this.UserPreviews;
         }
@@ -19,7 +19,7 @@ namespace Pixeez.Objects
 
     }
 
-    public class UserPreviews : HasUser
+    public class UserPreviews : IHasUser, IMainInfoObject
     {
 
         [JsonProperty("illusts")]
@@ -30,5 +30,8 @@ namespace Pixeez.Objects
 
         [JsonProperty("is_muted")]
         public bool IsMuted { get; set; }
+
+        [JsonProperty("user")]
+        public User User { get; set; }
     }
 }

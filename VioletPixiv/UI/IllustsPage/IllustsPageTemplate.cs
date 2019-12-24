@@ -22,10 +22,9 @@ namespace VioletPixiv
     /// </summary>
     /// <typeparam name="T1">Type in UIObject/ , Which needs to download the image(s).</typeparam>
     /// <typeparam name="T2">Has List<T3> and NextUrl</typeparam>
-    /// <typeparam name="T3">The first parameter type in T1 construstor .</typeparam>
-    public abstract class CollectionPageTemplate<T1, T2, T3> : System.Windows.Controls.Page, ICollectionPageTemplate
+    public abstract class CollectionPageTemplate<T1, T2> : System.Windows.Controls.Page, ICollectionPageTemplate
         where T1 : NeedToLoadImages 
-        where T2 : HasNextUrl<T3>
+        where T2 : HasNextUrl
     {
 
         protected const string TargetScrollViewerName = "ListViewScrollViewer"; // Get Specific name
@@ -37,14 +36,14 @@ namespace VioletPixiv
         /// Get CollectionViewModel
         /// </summary>
         /// <returns> Return CollectionViewModel Object</returns>
-        protected CollectionViewModelTemplate<T1, T2, T3> _CollectionViewModel;
-        public CollectionViewModelTemplate<T1, T2, T3> CollectionViewModel
+        protected CollectionViewModelTemplate<T1, T2> _CollectionViewModel;
+        public CollectionViewModelTemplate<T1, T2> CollectionViewModel
         {
             get
             {
                 if(this._CollectionViewModel == null)
                 {
-                    this._CollectionViewModel = this.DataContext as CollectionViewModelTemplate<T1, T2, T3>;
+                    this._CollectionViewModel = this.DataContext as CollectionViewModelTemplate<T1, T2>;
                 }
                 return this._CollectionViewModel;
             }
@@ -73,7 +72,7 @@ namespace VioletPixiv
         {
 
             // init
-            this.CollectionViewModel?.InitData();
+            this.CollectionViewModel?.InitializeData();
             this.MainScrollViewer?.ScrollToTop();
 
             // update ListView data
@@ -105,12 +104,8 @@ namespace VioletPixiv
 
     }
 
-    public class IllustsPageTemplate : CollectionPageTemplate<ArtistTemplate, IllustsList, Illust>
-    {
-    }
+    public class IllustsPageTemplate : CollectionPageTemplate< ArtistTemplate, IllustsList > { }
 
-    public class UsersPageTemplate : CollectionPageTemplate<UserTemplate<UserPreviews>, UserPreviewsList, UserPreviews>
-    {    
-    }
+    public class UsersPageTemplate : CollectionPageTemplate< UserTemplate<UserPreviews>, UserPreviewsList > { }
    
 }

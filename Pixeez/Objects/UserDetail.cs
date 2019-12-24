@@ -8,13 +8,8 @@ using System.Threading.Tasks;
 
 namespace Pixeez.Objects
 {
-    public class HasUser
-    {
-        [JsonProperty("user")]
-        public User User { get; set; }
-    }
-
-    public class UserDetail : HasUser
+ 
+    public class UserDetail : IHasUser
     {
 
         [JsonProperty("profile")]
@@ -26,6 +21,8 @@ namespace Pixeez.Objects
         [JsonProperty("workspace")]
         public Workspace Workspace { get; set; }
 
+        [JsonProperty("user")]
+        public User User { get; set; }
 
     }
 

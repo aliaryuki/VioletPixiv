@@ -41,7 +41,7 @@
 
                     <!-- Header Image -->
                     <uc:HeaderButton Grid.Row="0"
-                                     Tag="{Binding TargetUserDetail.User.Id, UpdateSourceTrigger=PropertyChanged}">
+                                     TargetUserID="{Binding TargetUserDetail.User.Id, UpdateSourceTrigger=PropertyChanged}">
                         <uc:HeaderButton.Background>
                             <ImageBrush ImageSource="{Binding IllustHeader, UpdateSourceTrigger=PropertyChanged}"></ImageBrush>
                         </uc:HeaderButton.Background>

@@ -13,6 +13,7 @@
              Command="{StaticResource FollowCommand}"
              CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
 
+
     <ToggleButton.Resources>
 
         <Color x:Key="FollowButtonBrush">#FF235BEE</Color>
@@ -24,12 +25,13 @@
     </ToggleButton.Resources>
 
     <ToggleButton.Style>
+        
         <Style TargetType="ToggleButton">
             
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
-                        <Border Background="{DynamicResource BackgroundBrushKey}">
+                        <Border Background="Transparent">
                             <ContentPresenter HorizontalAlignment="Center"                  
                                               VerticalAlignment="Center"/>
                         </Border>
@@ -42,7 +44,7 @@
                     <Border CornerRadius="10" 
                             BorderThickness="5" 
                             Background="{DynamicResource FollowButtonBrushSolid}"
-                            BorderBrush="Transparent">
+                            >
                         <TextBlock Margin="2"
                                    Foreground="{DynamicResource UnFollowButtonBrushSolid}"
                                    Text="フォロー"/>

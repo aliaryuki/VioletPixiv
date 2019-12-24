@@ -14,7 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VioletPixiv.UIObject;
 using VioletPixiv.UIObject.UserControls;
+using VioletPixiv.ViewModel;
 using static VioletPixiv.UIObject.EnumType;
 
 namespace VioletPixiv
@@ -22,83 +24,28 @@ namespace VioletPixiv
     /// <summary>
     /// Interaction logic for Page1.xaml
     /// </summary>
-    public partial class RankingFame : INotifyPropertyChanged
+    public partial class RankingFame
     {
-        #region INotifyPropertyChanged Implementation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-
-        #region OnPropertyChanged Variable
-
-        private DateTime _TargetDate;
-        public DateTime TargetDate
+        private RankingFrameViewModel _TargetViewModel;
+        public RankingFrameViewModel TargetViewModel
         {
             get
             {
-                return _TargetDate;
-            }
-
-            set
-            {
-                _TargetDate = value;
-
-                var tmpDays = new ObservableCollection<int>();
-                for (int i = 1; i < DateTime.DaysInMonth(TargetDate.Year, TargetDate.Month) + 1; i++)
+                if (this._TargetViewModel == null)
                 {
-                    tmpDays.Add(i);
+                    this._TargetViewModel = this.DataContext as RankingFrameViewModel;
                 }
-                Days = tmpDays;
-
-
+                return this._TargetViewModel;
             }
         }
-
-        private ObservableCollection<int> _Days = new ObservableCollection<int>();
-        public ObservableCollection<int> Days
-        {
-            get { return _Days; }
-            set
-            {
-                _Days = value;
-                OnPropertyChanged("Days");
-            }
-        }
-
-        private ObservableCollection<int> _Years = new ObservableCollection<int>();
-        public ObservableCollection<int> Years
-        {
-            get { return _Years; }
-            set
-            {
-                _Years = value;
-            }
-        }
-
-        #endregion
 
         public IllustsRankingType RankingType = IllustsRankingType.day;
+        public String DateStringFormat;
 
         public RankingFame()
         {
             InitializeComponent();
 
-            // Get Now Time
-            this.TargetDate = DateTime.Today.ToLocalTime();
-
-            // List 30 Years from now
-            for (int i = this.TargetDate.Year; i > this.TargetDate.Year - 30; i--)
-            {
-                this.Years.Add(i);
-            }
         }
 
         /// <summary>
@@ -140,7 +87,7 @@ namespace VioletPixiv
             }
 
             // Go Navigate
-            this.NavigateNewRankingPage();
+            this.NavigateNewRankingPage(GetSelectedDate());
 
         }
 
@@ -149,67 +96,37 @@ namespace VioletPixiv
         /// </summary>
         private void DateSearchButton_Click(object sender, RoutedEventArgs e)
         {
-            var TargetButton = sender as Button;
-            var DateSearchStackPanel = UIAccess.FindParentByName<StackPanel>(TargetButton, "DateSearchStackPanel");
-            var TargetDay = (DateSearchStackPanel.FindName("DayCombobox") as DarkCombobox).SelectedValue.ToString();
-
-            if (TargetDay == null) return;
-
             // Go Navigate
-            this.NavigateNewRankingPage();
+            this.NavigateNewRankingPage(GetSelectedDate());
         }
 
-        /// <summary>
-        /// When Change Combobox Date, update to TargetDate
-        /// </summary>
-        private void ChangeDays_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private String GetSelectedDate()
         {
-            var TargetComboBox = (ComboBox)sender;
-            if (TargetComboBox.Items.Count == 0 || TargetComboBox.SelectedValue == null) return;
+            var TargetTemplate = this.Template;
+            var ControlGrid =  TargetTemplate.FindName("MainToggleBar", this) as TopToggleBar;
+            var TargetVM = ControlGrid.DataContext as RankingFrameViewModel;
 
-            switch (TargetComboBox.Name)
-            {
-                case "YearCombobox":
-                    this.ChangeTime(this.TargetDate, year: (int)TargetComboBox.SelectedValue);
-                    break;
-
-                case "MonthCombobox":
-                    this.ChangeTime(this.TargetDate, month: (int)TargetComboBox.SelectedValue);
-                    break;
-
-                case "DayCombobox":
-                    this.ChangeTime(this.TargetDate, day: (int)TargetComboBox.SelectedValue);
-                    break;
-            }
-
+            return TargetVM.SelectedDateStringFormat;
         }
 
-        /// <summary>
-        /// ChangeTime and Call setter
-        /// </summary>
-        private void ChangeTime(DateTime dateTime, int? year = null, int? month = null, int? day = null)
+        private String ChangeToDateStringFormat(String Year, String Month, String Day)
         {
-            // Day can not Exceed that month should be.
-            day = day ?? Math.Min(dateTime.Day, DateTime.DaysInMonth(year ?? dateTime.Year, month ?? dateTime.Month));
-
-            // Set TargetDate Value
-            this.TargetDate = new DateTime(
-                year ?? dateTime.Year,
-                month ?? dateTime.Month,
-                day ?? dateTime.Day);
+            return Year + "-" + Month + "-" + Day;
         }
 
         // Navigate
-        private void NavigateNewRankingPage()
+        private void NavigateNewRankingPage(String DateFormatString)
         {
+            if (DateFormatString == null) return;
 
-            if (this.TargetDate.Date == DateTime.Now.Date)
+            if (DateFormatString == DateTime.Now.Date.ToString("yyyy-MM-dd"))
             {
                 this.Navigate(new RankingPage(RankingType: this.RankingType));
             }
             else
-                this.Navigate(new RankingPage(RankingType: this.RankingType, RankingDate: this.TargetDate.ToString("yyyy-MM-dd")));
+                this.Navigate(new RankingPage(RankingType: this.RankingType, RankingDate: DateFormatString));
 
         }
+
     }
 }

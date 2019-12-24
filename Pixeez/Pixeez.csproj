@@ -62,7 +62,9 @@
   <ItemGroup>
     <Compile Include="Objects\AllBookmarkTags.cs" />
     <Compile Include="Objects\Authorize.cs" />
+    <Compile Include="Objects\MainInfoObject.cs" />
     <Compile Include="Objects\IllustsComments.cs" />
+    <Compile Include="Objects\HasNextUrl.cs" />
     <Compile Include="Objects\IllustsList.cs" />
     <Compile Include="Objects\MyFeed.cs" />
     <Compile Include="Objects\Paginated.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Objects\TrendTags.cs" />
     <Compile Include="Objects\Ugoira.cs" />
     <Compile Include="Objects\User.cs" />
+    <Compile Include="Objects\IHasUser.cs" />
     <Compile Include="Objects\UserDetail.cs" />
     <Compile Include="Objects\UserFollow.cs" />
     <Compile Include="Objects\UserPreviewsList.cs" />
