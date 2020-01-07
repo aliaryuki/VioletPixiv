@@ -7,7 +7,8 @@
       mc:Ignorable="d" 
       Height="250" 
       Width="600" 
-      Foreground="#FFF9FFC0">
+      Foreground="#FFF9FFC0"
+      KeyDown="Window_KeyDown" >
 
     <Grid Background="#FF593D3D">
 

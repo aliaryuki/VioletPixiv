@@ -28,7 +28,7 @@ namespace VioletPixiv
         {
 
             this.IsEnabled = false;
-            LoginProcess(accountBox.Text, passwordBox.Password);
+            this.LoginProcess(accountBox.Text, passwordBox.Password);
         
         }
 
@@ -64,6 +64,14 @@ namespace VioletPixiv
             }
             
 
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                this.LoginProcess(accountBox.Text, passwordBox.Password);
+            }
         }
 
     }
