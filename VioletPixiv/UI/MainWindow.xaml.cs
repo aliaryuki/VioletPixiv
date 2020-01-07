@@ -13,6 +13,7 @@ using System.Threading;
 using System.Collections;
 using VioletPixiv.ViewModel;
 using VioletPixiv.Animation;
+using System.Windows.Input;
 
 namespace VioletPixiv
 {
@@ -159,6 +160,11 @@ namespace VioletPixiv
         /// </summary>
         private void FrameRefreshButton_Click(object sender, RoutedEventArgs e)
         {
+            this.Refresh();
+        }
+
+        private void Refresh()
+        {
             var SelectedItemFrame = (LeftTab.SelectedItem as TabItem).Content as System.Windows.Controls.Frame;
 
             (SelectedItemFrame.Content as ICollectionPageTemplate).InitLoading();
@@ -233,5 +239,15 @@ namespace VioletPixiv
                     break;
             }
         }
+
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F5)
+            {
+                this.Refresh();
+            }
+        }
+
     }
 }

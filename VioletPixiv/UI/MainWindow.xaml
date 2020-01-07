@@ -22,8 +22,9 @@
         WindowStyle="SingleBorderWindow"
 		UseLayoutRounding="True"
 		TextOptions.TextFormattingMode="Display"
+        KeyDown="Window_KeyDown" 
         >
-
+    
     <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="41" />
