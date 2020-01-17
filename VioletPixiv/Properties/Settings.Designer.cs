@@ -74,24 +74,36 @@ namespace VioletPixiv.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool theme {
+        public bool DarkTheme {
             get {
-                return ((bool)(this["theme"]));
+                return ((bool)(this["DarkTheme"]));
             }
             set {
-                this["theme"] = value;
+                this["DarkTheme"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool Keyboard {
             get {
                 return ((bool)(this["Keyboard"]));
             }
             set {
                 this["Keyboard"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool NSFW {
+            get {
+                return ((bool)(this["NSFW"]));
+            }
+            set {
+                this["NSFW"] = value;
             }
         }
     }

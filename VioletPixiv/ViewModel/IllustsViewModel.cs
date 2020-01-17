@@ -262,7 +262,7 @@ namespace VioletPixiv.ViewModel
             set
             {
                 this._UserProfileSource = value;
-                OnPropertyChanged("UserProfileSource");
+                RaisePropertyChanged();
             }
         }
 
@@ -373,7 +373,7 @@ namespace VioletPixiv.ViewModel
             set
             {
                 this._TargetArtistsTemplate = value;
-                OnPropertyChanged("TargetArtistsTemplate");
+                RaisePropertyChanged();
             }
         }
 

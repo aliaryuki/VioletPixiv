@@ -237,6 +237,10 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\IllustsViewModel.cs" />
     <Compile Include="ViewModel\NotifyImplementClass.cs" />
+    <Page Include="Resources\BrightTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources\TextBoxStyleDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -49,6 +49,7 @@
 
                     <TextBlock Style="{StaticResource ConfigElement}">ダルク</TextBlock>
                     <uc:ToggleOnOffButton   Click="ThemeConfig_Click"
+                                            IsChecked="{Binding Source={x:Static properties:Settings.Default},Path=DarkTheme}"
                                             Tag="{Binding Source={x:Static properties:Settings.Default}, Path=theme}"/>
                     
                 </StackPanel>
@@ -58,6 +59,7 @@
                     
                     <TextBlock Style="{StaticResource ConfigElement}">キーボード操作</TextBlock>
                     <uc:ToggleOnOffButton   Click="ThemeConfig_Click"
+                                            IsChecked="{Binding Source={x:Static properties:Settings.Default},Path=Keyboard}"
                                             Tag="{Binding Source={x:Static properties:Settings.Default}, Path=Keyboard}"/>
                 </StackPanel>
 
@@ -72,6 +74,7 @@
                     
                     <TextBlock Style="{StaticResource ConfigElement}">NSFW</TextBlock>
                     <uc:ToggleOnOffButton   Click="NSFWConfig_Click"
+                                            IsChecked="{Binding Source={x:Static properties:Settings.Default},Path=NSFW}"
                                             Tag="{Binding Source={x:Static properties:Settings.Default}, Path=Keyboard}"/>
                     
                 </StackPanel>
